@@ -5,7 +5,13 @@ from astral.sun import sun
 
 
 def is_it_dark_in_cape_town():
+    """
+    looks up the sunrise and sunset times for the current date and compares
+    them to the current time
 
+    returns:
+    boolean: True = Dark, False = Light
+    """
     # create a location with latitude and longitude co-ordinates
 	location = LocationInfo("Cape Town", "South Africa", "Africa/Johannesburg", -33.92, 18.42)
 	
