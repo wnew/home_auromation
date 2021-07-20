@@ -20,6 +20,8 @@ from telegram import (Poll, ParseMode, KeyboardButton, KeyboardButtonPollType,
 from telegram.ext import (Updater, CommandHandler, PollAnswerHandler, PollHandler, MessageHandler,
                           Filters, CallbackQueryHandler)
 import urllib3
+import tools
+
 
 # setup alarm logger
 alarm_logger = logging.getLogger('alarm_log')
@@ -375,8 +377,9 @@ class Alarm(object):
                             print(s)
                             alarm_logger.warning(s)
                             # turn on the outside lights
-                            self.flip_light(0,1)
-                            self.flip_light(1,1)
+                            if tools.dark_in_cpt():
+                                self.flip_light(0,1)
+                                self.flip_light(1,1)
                             beepSiren(1)
                             self.send_alarm_msg(s)
                         self.trigger_state = self.TRIGGERED
@@ -390,8 +393,9 @@ class Alarm(object):
                             print(s)
                             alarm_logger.warning(s)
                             # turn on the outside lights
-                            self.flip_light(0,1)
-                            self.flip_light(1,1)
+                            if tools.dark_in_cpt():
+                                self.flip_light(0,1)
+                                self.flip_light(1,1)
                             beepSiren(1)
                             self.send_alarm_msg(s)
                         self.trigger_state = self.TRIGGERED
@@ -712,6 +716,12 @@ class Alarm(object):
             msg_logger.warning("Msg sent: '%s' to chat_id %s" % (resp_msg, chat_id))
 
 
+###############################################################################
+#                                                                             #
+#                       Functions to control gpios                            #
+#                                                                             #
+###############################################################################
+
 def toggleGate(duration):
     GPIO.output(GATE_PIN, False)
     time.sleep(0.5)
@@ -757,5 +767,7 @@ def sirenOff():
 alarm = Alarm()
 print('Bot up and ready ...')
 
-#while 1:
-#    time.sleep(10)
+
+
+
+
